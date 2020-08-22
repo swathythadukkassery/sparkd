@@ -17,10 +17,36 @@ class AuthService {
     //.map((FirebaseUser user) => _userFromFirebaseUser(user));
   }
 
+//signin with email and psw
+  Future signInWithEmailAndPassword(String email, String password) async {
+    try {
+      AuthResult result = await _auth.signInWithEmailAndPassword(
+          email: email, password: password);
+      FirebaseUser user = result.user;
+      return _userFromFirebaseUser(user);
+    } catch (e) {
+      print(e.toString());
+      return null;
+    }
+  }
+
 //signin anon
   Future signInAnon() async {
     try {
       AuthResult result = await _auth.signInAnonymously();
+      FirebaseUser user = result.user;
+      return _userFromFirebaseUser(user);
+    } catch (e) {
+      print(e.toString());
+      return null;
+    }
+  }
+  //reg with username and psw
+
+  Future registerWithEmailAndPassword(String email, String password) async {
+    try {
+      AuthResult result = await _auth.createUserWithEmailAndPassword(
+          email: email, password: password);
       FirebaseUser user = result.user;
       return _userFromFirebaseUser(user);
     } catch (e) {
