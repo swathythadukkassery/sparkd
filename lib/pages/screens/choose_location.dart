@@ -21,7 +21,10 @@ class _ChooseLocationState extends State<ChooseLocation> {
             onPressed: () {
               Navigator.pop(context);
             },
-            child: Text('Home')),
+            child: Text(
+              'Home',
+              style: TextStyle(fontSize: 20.0),
+            )),
       ),
     );
   }
