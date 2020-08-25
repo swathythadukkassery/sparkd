@@ -5,7 +5,7 @@ import 'package:tictoc/pages/authenticate/sign_in.dart';
 import 'package:tictoc/pages/models/user.dart';
 import 'package:tictoc/pages/screens/choose_location.dart';
 import 'package:tictoc/pages/screens/home.dart';
-import 'package:tictoc/pages/screens/loading.dart';
+import 'package:tictoc/pages/screens/Discussion.dart';
 import 'package:tictoc/pages/screens/profile.dart';
 import 'package:tictoc/pages/wrapper.dart';
 import 'package:tictoc/services/auth.dart';

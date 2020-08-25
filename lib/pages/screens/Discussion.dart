@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart';
 import 'dart:convert';
 
-class Loading extends StatefulWidget {
+class Discussion extends StatefulWidget {
   @override
-  _LoadingState createState() => _LoadingState();
+  _DiscussionState createState() => _DiscussionState();
 }
 
-class _LoadingState extends State<Loading> {
+class _DiscussionState extends State<Discussion> {
   // void getTime() async {
   //   Response response =
   //       await get('http://worldtimeapi.org/api/timezone/Asia/Kolkata');

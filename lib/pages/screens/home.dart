@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:google_sign_in/google_sign_in.dart';
+import 'package:tictoc/pages/authenticate/sign_in.dart';
 import 'package:tictoc/pages/screens/choose_location.dart';
 import 'package:tictoc/services/auth.dart';
 
@@ -27,7 +29,19 @@ class _HomeState extends State<Home> {
             onPressed: () async {
               await _auth.signOut();
             },
-          )
+          ),
+          FlatButton.icon(
+            icon: Icon(Icons.person),
+            label: Text('logout'),
+            onPressed: () {
+              _auth.signOutGoogle();
+
+              Navigator.of(context).pushAndRemoveUntil(
+                  MaterialPageRoute(builder: (context) {
+                return SignIn();
+              }), ModalRoute.withName('/'));
+            },
+          ),
         ],
       ),
       body: SafeArea(

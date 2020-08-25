@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "460992183839-fceesrpdrl5n1al6dsfa1slabg737406.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.tictoc",
+            "certificate_hash": "8b090b7d30ac13a516ee470b5224dc4a4936ce42"
+          }
+        },
+        {
           "client_id": "460992183839-sglt6itiehqgshreunri2oaeqcu73ovd.apps.googleusercontent.com",
           "client_type": 3
         }
