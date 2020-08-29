@@ -1,6 +1,9 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:tictoc/pages/authenticate/helperfunction.dart';
 import 'package:tictoc/pages/screens/Discussion.dart';
 import 'package:tictoc/pages/screens/home.dart';
+import 'package:tictoc/services/database.dart';
 import 'package:tictoc/shared/loading.dart';
 import 'package:tictoc/services/auth.dart';
 import 'package:tictoc/shared/constants.dart';
@@ -20,6 +23,8 @@ class _SignInState extends State<SignIn> {
   final AuthService _auth = AuthService();
   final _formKey = GlobalKey<FormState>();
   bool loading = false;
+  QuerySnapshot snapshotUserInfo;
+  DatabaseMethods databaseMethods = new DatabaseMethods();
 
   //text state
   String email = '';
@@ -45,26 +50,26 @@ class _SignInState extends State<SignIn> {
               ],
             ),
             body: Container(
-              height: 400,
+              //height: 400,
               decoration: BoxDecoration(
                   image: DecorationImage(
-                      image: AssetImage('assets/images/background.png'),
+                      image: AssetImage('assets/images/bg2.jpg'),
                       fit: BoxFit.fill)),
               child: Stack(
                 children: <Widget>[
                   Center(
                     child: Container(
                         padding: EdgeInsets.symmetric(
-                            vertical: 50.0, horizontal: 50.0),
+                            vertical: 20.0, horizontal: 50.0),
                         child: Form(
                           key: _formKey,
                           child: Column(
                             children: <Widget>[
-                              SizedBox(height: 10.0),
+                              SizedBox(height: 5.0),
                               TextFormField(
                                 validator: (val) =>
                                     val.isEmpty ? 'Enter valid email' : null,
-                                style: TextStyle(color: Colors.black),
+                                style: TextStyle(color: Colors.white),
                                 decoration: textInputDecoration.copyWith(
                                   hintText: 'Email',
                                   icon: Icon(Icons.person_outline),
@@ -73,12 +78,12 @@ class _SignInState extends State<SignIn> {
                                   setState(() => email = val);
                                 },
                               ),
-                              SizedBox(height: 10.0),
+                              SizedBox(height: 20.0),
                               TextFormField(
                                 validator: (val) => val.length < 6
                                     ? 'Password should contain atleast 6 letters'
                                     : null,
-                                style: TextStyle(color: Colors.black),
+                                style: TextStyle(color: Colors.white),
                                 decoration: textInputDecoration.copyWith(
                                     hintText: 'Password',
                                     icon: Icon(Icons.lock_outline)),
@@ -87,8 +92,11 @@ class _SignInState extends State<SignIn> {
                                   setState(() => password = val);
                                 },
                               ),
-                              // SizedBox(height: 20.0),
+                              SizedBox(height: 20.0),
                               RaisedButton(
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(20.0),
+                                ),
                                 color: Colors.pink,
                                 child: Text(
                                   'signin',
@@ -96,7 +104,19 @@ class _SignInState extends State<SignIn> {
                                 ),
                                 onPressed: () async {
                                   if (_formKey.currentState.validate()) {
+                                    helperFunctions
+                                        .saveUserEmailSharedPreference(email);
+                                    //function to get username
                                     setState(() => loading = true);
+                                    databaseMethods
+                                        .getUserByEmail(email)
+                                        .then((val) {
+                                      snapshotUserInfo = val;
+                                      helperFunctions
+                                          .saveUserNameSharedPreference(
+                                              snapshotUserInfo
+                                                  .documents[0].data["name"]);
+                                    });
                                     dynamic result =
                                         await _auth.signInWithEmailAndPassword(
                                             email, password);
@@ -106,16 +126,20 @@ class _SignInState extends State<SignIn> {
                                             'could not signin with those credentials';
                                         loading = false;
                                       });
+                                    } else {
+                                      helperFunctions
+                                          .saveUserLoggedInSharedPreference(
+                                              true);
                                     }
                                   }
                                 },
                               ),
-                              // SizedBox(height: 12.0),
-                              // Text(
-                              //   error,
-                              //   style:
-                              //       TextStyle(color: Colors.amber, fontSize: 14.0),
-                              // ),
+                              SizedBox(height: 8.0),
+                              Text(
+                                error,
+                                style: TextStyle(
+                                    color: Colors.amber, fontSize: 14.0),
+                              ),
                             ],
                           ),
                         )),

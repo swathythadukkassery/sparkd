@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:tictoc/pages/authenticate/authenticate.dart';
+import 'package:tictoc/pages/authenticate/helperfunction.dart';
 import 'package:tictoc/pages/authenticate/sign_in.dart';
 import 'package:tictoc/pages/models/user.dart';
 import 'package:tictoc/pages/screens/choose_location.dart';
@@ -18,6 +19,17 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
+  bool userIsLoggedIn;
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+  }
+
+  getLoggedInState() async {
+    await helperFunctions.getUserLoggedInSharedPreference().then((value) {});
+  }
+
   @override
   Widget build(BuildContext context) {
     return StreamProvider<User>.value(

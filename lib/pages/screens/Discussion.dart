@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart';
 import 'dart:convert';
 
+import 'package:tictoc/pages/screens/search.dart';
+
 class Discussion extends StatefulWidget {
   @override
   _DiscussionState createState() => _DiscussionState();
@@ -26,23 +28,33 @@ class _DiscussionState extends State<Discussion> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.grey[200],
+      backgroundColor: Color(0xff1F1F1F),
       appBar: AppBar(
-        backgroundColor: Colors.blue[900],
+        backgroundColor: Color(0xff145C9E),
+        actions: <Widget>[
+          FlatButton.icon(
+            icon: Icon(
+              Icons.home,
+              color: Colors.white,
+            ),
+            label: Text('Home'),
+            onPressed: () {
+              Navigator.pop(context);
+            },
+          ),
+        ],
         title: Text('Discussion'),
         centerTitle: true,
         elevation: 0,
       ),
-      body: Center(
-        child: RaisedButton(
-            onPressed: () {
-              Navigator.pop(context);
-            },
-            child: Text(
-              'Home',
-              style: TextStyle(fontSize: 20.0),
-            )),
+      floatingActionButton: FloatingActionButton(
+        child: Icon(Icons.search),
+        onPressed: () {
+          Navigator.push(
+              context, MaterialPageRoute(builder: (context) => SearchScreen()));
+        },
       ),
+      body: Center(),
     );
   }
 }
