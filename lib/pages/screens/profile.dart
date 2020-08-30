@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:tictoc/pages/authenticate/constantsFun.dart';
 
 class profile extends StatefulWidget {
   @override
@@ -18,12 +19,25 @@ class _profileState extends State<profile> {
           ),
         ),
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
             Center(
-              child: CircleAvatar(
-                backgroundImage: NetworkImage(
-                    'https://image.freepik.com/free-vector/man-profile-cartoon_18591-58482.jpg'),
-                radius: 40.0,
+              child: Column(
+                children: <Widget>[
+                  SizedBox(
+                    width: 16,
+                    height: 20,
+                  ),
+                  CircleAvatar(
+                    backgroundImage: NetworkImage(
+                        'https://image.freepik.com/free-vector/man-profile-cartoon_18591-58482.jpg'),
+                    radius: 40.0,
+                  ),
+                  Text(
+                    Constants.myName,
+                    style: TextStyle(color: Colors.black, fontSize: 16),
+                  )
+                ],
               ),
             ),
             Divider(

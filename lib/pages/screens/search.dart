@@ -53,7 +53,7 @@ class _SearchScreenState extends State<SearchScreen> {
       Navigator.push(
           context,
           MaterialPageRoute(
-              builder: (context) => ConversationScreen(userName)));
+              builder: (context) => ConversationScreen(userName, chatRoomId)));
     } else {
       print("not possible");
     }

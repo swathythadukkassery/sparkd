@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
+import 'package:tictoc/pages/authenticate/constantsFun.dart';
+import 'package:tictoc/pages/screens/conversations.dart';
 import 'dart:convert';
-
 import 'package:tictoc/pages/screens/search.dart';
+import 'package:tictoc/services/database.dart';
 
 class Discussion extends StatefulWidget {
   @override
@@ -10,20 +12,39 @@ class Discussion extends StatefulWidget {
 }
 
 class _DiscussionState extends State<Discussion> {
-  // void getTime() async {
-  //   Response response =
-  //       await get('http://worldtimeapi.org/api/timezone/Asia/Kolkata');
-  //   Map data = jsonDecode(response.body);
-  //   String datetime = data['datetime'];
-  //   String offset = data['utc_offset'];
-  //   DateTime now = DateTime.parse(datetime);
-  //   print(now);
-  // }
+  DatabaseMethods databaseMethods = new DatabaseMethods();
+  Stream chatRoomStream;
 
-  // void initState() {
-  //   super.initState();
-  //   getTime();
-  // }
+  Widget chatRoomList() {
+    return StreamBuilder(
+      stream: chatRoomStream,
+      builder: (context, snapshot) {
+        return snapshot.hasData
+            ? ListView.builder(
+                itemCount: snapshot.data.documents.length,
+                itemBuilder: (context, index) {
+                  return ChatRoomTile(
+                      snapshot.data.documents[index].data["chatRoomId"]
+                          .toString()
+                          .replaceAll("_", "")
+                          .replaceAll(Constants.myName, ""),
+                      snapshot.data.documents[index].data["chatRoomId"]);
+                })
+            : Container();
+      },
+    );
+  }
+
+  @override
+  void initState() {
+    databaseMethods.getChatRooms(Constants.myName).then((value) {
+      setState(() {
+        chatRoomStream = value;
+      });
+    });
+    // TODO: implement initState
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -54,7 +75,53 @@ class _DiscussionState extends State<Discussion> {
               context, MaterialPageRoute(builder: (context) => SearchScreen()));
         },
       ),
-      body: Center(),
+      body: chatRoomList(),
+    );
+  }
+}
+
+class ChatRoomTile extends StatelessWidget {
+  final String userName;
+  final String chatRoomId;
+  ChatRoomTile(this.userName, this.chatRoomId);
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: () {
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) =>
+                    ConversationScreen(userName, chatRoomId)));
+      },
+      child: Container(
+        color: Colors.black26,
+        padding: EdgeInsets.symmetric(horizontal: 24, vertical: 16),
+        child: Row(
+          children: <Widget>[
+            Container(
+              height: 40,
+              width: 40,
+              alignment: Alignment.center,
+              decoration: BoxDecoration(
+                color: Colors.blue,
+                borderRadius: BorderRadius.circular(40),
+              ),
+              child: Text(
+                "${userName.substring(0, 1).toUpperCase()}",
+                style: TextStyle(color: Colors.white, fontSize: 20),
+              ),
+            ),
+            SizedBox(
+              width: 8,
+            ),
+            Text(
+              userName,
+              style: TextStyle(color: Colors.white, fontSize: 20),
+            ),
+          ],
+        ),
+      ),
     );
   }
 }
